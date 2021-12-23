@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'the_eye.apps.TheEyeConfig',
 
     #installed using pip
+    'django_q'
 ]
 
 MIDDLEWARE = [
@@ -79,6 +80,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'theeyeproject.wsgi.application'
+
+
+Q_CLUSTER = {
+    'name': 'theeyeproject',
+    'recycle': 120, # The number of tasks a worker will process before recycling . Useful to release memory resources on a regular basis. Defaults to 500.
+    'retry': 120, #The number of seconds a broker will wait for a cluster to finish a task, before it’s presented again. Retry has to be larger than timeout. Defaults to 60.
+    'timeout': 60, # The number of seconds a worker is allowed to spend on a task before it’s terminated. Defaults to None.
+    'workers': 3, #The number of workers to use in the cluster. Defaults to CPU count of the current host. My host has 3 workers.
+    'queue_limit': 120, # how many tasks are kept in memory by a single cluster.
+    'orm': 'default',
+}
 
 
 # Database
