@@ -2,28 +2,44 @@ from django.db import models
 from django.conf import settings
 
 
+class Session(models.Model):
+    session_id = models.CharField(max_length=255, blank=True, null=True) # This field will be populated based on the data field information that comes in from the external api.
+    def __str__(self):
+        return self.session_id
 
-class Event(models.Model):
-    category = models.CharField(max_length=80, blank=True, null=True) # This field will be determined based on the data that comes in from the external api.
-    name = models.CharField(max_length=80, blank=True, null=True) # This field will be determined based on the data that comes in from the external api.
-    data = models.JSONField(blank=True, null=True) # This field will be populated based on the data field information that comes in from the external api.
-    timestamp = models.DateTimeField(blank=True, null=True) # This field will be populated from the "data" field external api, so it is not auto_now_add.
+
+class Category(models.Model):
+    name = models.CharField(max_length=80, blank=True, null=True)
 
     class Meta:
-        ordering = ('timestamp',)
+        verbose_name_plural = "categories"
+
+    def __str__(self):
+        return self.name
+
+
+class Time(models.Model):
+    timestamp = models.DateTimeField(blank=True, null=True)
+    def __str__(self):
+        return str(self.timestamp)
+
+
+class Event(models.Model):
+    session_id = models.ForeignKey(Session,
+                        on_delete=models.CASCADE)
+    instance_id = models.SmallIntegerField()
+    category = models.ForeignKey(Category,
+                        on_delete=models.CASCADE)
+    name = models.CharField(max_length=80, blank=True, null=True) # This field will be determined based on the data that comes in from the external api.
+    data = models.JSONField(blank=True, null=True) # This field will be populated based on the data field information that comes in from the external api.
+    timestamp = models.ForeignKey(Time,
+                        on_delete=models.CASCADE)
+
+    class Meta:
+        order_with_respect_to = 'timestamp'
 
     def __str__(self):
         return "%s %s" %(self.category, self.name)
-
-
-class Session(models.Model):
-    session_id = models.CharField(max_length=255, blank=True, null=True) # This field will be populated based on the data field information that comes in from the external api.
-    event = models.ForeignKey(Event,
-                              on_delete=models.CASCADE,
-                              related_name='sessions')
-
-    def __str__(self):
-        return self.session_id
 
 
 class Client(models.Model):
@@ -33,3 +49,4 @@ class Client(models.Model):
 
     def __str__(self):
         return "Client: %s   API Endpoint: %s" %(self.user, self.api_url)
+
