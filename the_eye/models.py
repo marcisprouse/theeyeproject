@@ -2,6 +2,15 @@ from django.db import models
 from django.conf import settings
 
 
+class Client(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    api_url = models.URLField(max_length=200, blank=True)
+    token = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username
+
+
 class Session(models.Model):
     session_id = models.CharField(max_length=255, blank=True, null=True) # This field will be populated based on the data field information that comes in from the external api.
     def __str__(self):
@@ -25,6 +34,8 @@ class Time(models.Model):
 
 
 class Event(models.Model):
+    client = models.ForeignKey(Client,
+                        on_delete=models.CASCADE)
     session_id = models.ForeignKey(Session,
                         on_delete=models.CASCADE)
     instance_id = models.SmallIntegerField()
@@ -41,12 +52,4 @@ class Event(models.Model):
     def __str__(self):
         return "%s %s" %(self.category, self.name)
 
-
-class Client(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    api_url = models.URLField(max_length=200, blank=True)
-    token = models.CharField(max_length=255, blank=True, null=True)
-
-    def __str__(self):
-        return "Client: %s   API Endpoint: %s" %(self.user, self.api_url)
 

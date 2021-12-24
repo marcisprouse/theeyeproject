@@ -74,6 +74,7 @@ for client in clients:
             t = Time.objects.get(timestamp=parsed_timestamp)
 
             event=Event(
+                client = client,
                 session_id = s,
                 instance_id = instance_id,
                 data = raw_data[idx],
