@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from django.urls import reverse_lazy
 
 import environ
 
@@ -48,7 +49,9 @@ INSTALLED_APPS = [
     'the_eye.apps.TheEyeConfig',
 
     #installed using pip
-    'django_q'
+    'django_q',
+    'crispy_forms',
+    'graphene_django'
 ]
 
 MIDDLEWARE = [
@@ -138,6 +141,11 @@ USE_I18N = True
 
 USE_TZ = True
 
+GRAPHENE = {
+    "SCHEMA": "the_eye.schema.schema"
+}
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -146,6 +154,11 @@ MEDIA_ROOT = '/home/webfairy/theeyeproject/media'
 MEDIA_URL = '/media/'
 STATIC_ROOT = '/home/webfairy/theeyeproject/static'
 STATIC_URL = '/static/'
+
+LOGOUT_REDIRECT_URL = reverse_lazy('the_eye:home')
+LOGIN_REDIRECT_URL = reverse_lazy('the_eye:home')
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
