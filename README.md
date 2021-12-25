@@ -74,7 +74,7 @@ that answer in the statement: Different types of Events (identified
 by category + name) can have different validations for their payloads.
 I thought that maybe you can determine the Category and Name based on
 the payload of data coming in.  I did this line of thinking within my
-script (seeds.py) and allowed for an actual Category field and Name
+script (seed.py) and allowed for an actual Category field and Name
 field to come in from the payload as well.
 
 ###Constraints and Requirements<br>
@@ -82,8 +82,9 @@ The Session, Event, Category, and Time models are populated through
 a script I wrote to get the data from the client app's api endpoint.
 This script is scheduled and the data is not processed in real time.
 I have workers set up through Django Q to keep the data coming in 
-asynchronously.  I still need to add F() to the script's database calls
-in order to avoid race conditions.  I will update.
+asynchronously.  I added the transaction.atomic decorator to my 
+seed_event() script with select_for_update to the database calls to
+avoid race conditions.
 
 ###Use Cases
 I implemented the use case of being able to query a specific session,

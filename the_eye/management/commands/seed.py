@@ -2,6 +2,7 @@ import requests
 from django.core.management.base import BaseCommand
 from the_eye.models import Event, Client, Session, Time, Category
 import dateutil.parser
+from django.db import transaction
 
 clients = Client.objects.all()
 
@@ -14,13 +15,14 @@ for client in clients:
         data = r.json()
         return data
 
+    @transaction.atomic #using to prevent race conditions with select_for_update
     def seed_event():
         idx = 0 # initiate counter for data json object index
         raw_data=get_data()
         for i in get_data():
 
             # session model
-            s = Session.objects.filter(session_id=i['session_id'])
+            s = Session.objects.select_for_update().filter(session_id=i['session_id'])
             if s.exists():
                 pass
             else:
@@ -43,7 +45,7 @@ for client in clients:
                 category = 'other interaction'
 
 
-            c = Category.objects.filter(name=category)
+            c = Category.objects.select_for_update().filter(name=category)
             if c.exists():
                 pass
             else:
@@ -62,16 +64,16 @@ for client in clients:
 
             parsed_timestamp = dateutil.parser.parse(i['timestamp']) # making that timestamp from string back to DateTimeField
 
-            t = Time.objects.filter(timestamp=parsed_timestamp)
+            t = Time.objects.select_for_update().filter(timestamp=parsed_timestamp)
             if t.exists():
                 pass
             else:
                 t = Time.objects.create(timestamp=parsed_timestamp)
                 t.save()
 
-            s = Session.objects.get(session_id=i['session_id'])
-            c = Category.objects.get(name=category)
-            t = Time.objects.get(timestamp=parsed_timestamp)
+            s = Session.objects.select_for_update().get(session_id=i['session_id'])
+            c = Category.objects.select_for_update().get(name=category)
+            t = Time.objects.select_for_update().get(timestamp=parsed_timestamp)
 
             event=Event(
                 client = client,
@@ -85,13 +87,13 @@ for client in clients:
 
             idx = idx + 1
 
-            if Event.objects.all().filter(instance_id = int(i['id'])) and Session.objects.all().filter(session_id = i['session_id']): # This is to prevent duplicates
+            if Event.objects.select_for_update().all().filter(instance_id = int(i['id'])) and Session.objects.select_for_update().all().filter(session_id = i['session_id']): # This is to prevent duplicates
                 pass
             else:
                 event.save()
 
 
-            s = Session.objects.filter(session_id=i['session_id'])
+            s = Session.objects.select_for_update().filter(session_id=i['session_id'])
             if s.exists():
                 pass
             else:
