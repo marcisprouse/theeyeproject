@@ -15,6 +15,7 @@ for client in clients:
         data = r.json()
         return data
 
+
     @transaction.atomic #using to prevent race conditions with select_for_update
     def seed_event():
         idx = 0 # initiate counter for data json object index
@@ -24,7 +25,7 @@ for client in clients:
             # session model
             s = Session.objects.select_for_update().filter(session_id=i['session_id'])
             if s.exists():
-                pass
+                print("Already there.")
             else:
                 s = Session.objects.create(session_id=i['session_id'])
                 s.save()
@@ -47,7 +48,7 @@ for client in clients:
 
             c = Category.objects.select_for_update().filter(name=category)
             if c.exists():
-                pass
+                print("Already there.")
             else:
                 c = Category.objects.create(name=category)
                 c.save()
@@ -66,7 +67,7 @@ for client in clients:
 
             t = Time.objects.select_for_update().filter(timestamp=parsed_timestamp)
             if t.exists():
-                pass
+                print("Already there.")
             else:
                 t = Time.objects.create(timestamp=parsed_timestamp)
                 t.save()
@@ -88,17 +89,9 @@ for client in clients:
             idx = idx + 1
 
             if Event.objects.select_for_update().all().filter(instance_id = int(i['id'])) and Session.objects.select_for_update().all().filter(session_id = i['session_id']): # This is to prevent duplicates
-                pass
+                print("Already there.")
             else:
                 event.save()
-
-
-            s = Session.objects.select_for_update().filter(session_id=i['session_id'])
-            if s.exists():
-                pass
-            else:
-                s = Session.objects.create(session_id=i['session_id'])
-                s.save()
 
 
     class Command(BaseCommand):
