@@ -1,8 +1,8 @@
-#The Eye
+# The Eye
 A service that collects events from applications to help make 
 data-driven decisions regarding web analytics.
 
-##Live Demo
+## Live Demo
 This project has a live working demo at
 [https://www.the-eye.app/](https://www.the-eye.app/)
 
@@ -16,7 +16,7 @@ web application and the code can be found within the "fairysite"
 project in my github repositories here:
 [Client App Used in The Eye](https://github.com/marcisprouse/fairysite)
 
-##My Conclusions, Rationale and Thought Processes:
+## My Conclusions, Rationale and Thought Processes:
 This project was completed as a code challenge through a hiring
 process.  This section is to elaborate on my conclusions, rationale,
 and thought processes for completing the project.
@@ -77,7 +77,7 @@ the payload of data coming in.  I did this line of thinking within my
 script (seed.py) and allowed for an actual Category field and Name
 field to come in from the payload as well.
 
-###Constraints and Requirements<br>
+### Constraints and Requirements<br>
 The Session, Event, Category, and Time models are populated through
 a script I wrote to get the data from the client app's api endpoint.
 This script is scheduled and the data is not processed in real time.
@@ -86,7 +86,7 @@ asynchronously.  I added the transaction.atomic decorator to my
 seed_event() script with select_for_update to the database calls to
 avoid race conditions.
 
-###Use Cases
+### Use Cases
 I implemented the use case of being able to query a specific session,
 a specific category, and a specific time range, but not through to
 its end.  I set it up to where GraphQL could query for this
@@ -102,7 +102,7 @@ on the other models. I would use django signals to populate the Error
 model.
 
 
-##Installation Requirements
+## Installation Requirements
 Includes, but not exclusively:
 * Django 4.0
 * Python 3.9
@@ -112,7 +112,7 @@ Includes, but not exclusively:
 
 See requirements.txt for full list and dependencies.
 
-##Usage
+## Usage
 "The Eye" is a service that gets a client app's api payload of 
 web analytical data, processes that data, and provides two ways
 to view the data (GraphQL and within Django Templates).
@@ -137,7 +137,7 @@ Time information with related event information.  I did set up the
 a global variable. The events are listed in order of time that
 they occurred, most recent first.  
   
-##Notes to Reviewer
+## Notes to Reviewer
 * Please be sure to visit the live demo site! Credentials to login
 will be sent with invitation to view the code.
 * I created a second, client app to talk to "The Eye". Please view 
