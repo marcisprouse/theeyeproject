@@ -32,6 +32,9 @@ class Time(models.Model):
     def __str__(self):
         return str(self.timestamp)
 
+    class Meta:
+        ordering = ['-timestamp']
+
 
 class Event(models.Model):
     client = models.ForeignKey(Client,

@@ -130,7 +130,12 @@ logged into "The Eye."
 
 * If templates set up, List and Detail views are provided in views.py
 so that templates can easily render tables of Session, Category, and 
-Time information with related event information.
+Time information with related event information.  I did set up the
+ Session Lookup templates - you can see it in action in the Live Demo.
+ When you click on a session, a detail page with table of events is
+ populated.  I used a custom context processor to make "all_events"
+a global variable. The events are listed in order of time that
+they occurred, most recent first.  
   
 ##Notes to Reviewer
 * Please be sure to visit the live demo site! Credentials to login

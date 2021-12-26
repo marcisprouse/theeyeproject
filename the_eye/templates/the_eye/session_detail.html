@@ -1,0 +1,47 @@
+{% extends "base_nav.html" %}
+{% load static %}
+{% block title %}Sessiont Detail - The Eye{% endblock %}
+
+{% block content %}
+
+        <section class="container section">
+          <div class="row ws-m">
+
+            <header class="sec-heading">
+              <h2>Event Detail for Session: </h2><br>
+              <h4 style="text-transform: lowercase;">{{ session }}</h4>
+            </header>
+
+            <strong>{{ event_data }}</strong>
+
+            <table class="table" style="margin-bottom:150px;">
+                <tr>
+                    <th>Client App</th>
+                    <th>Category</th>
+                    <th>Name</th>
+                    <th>Data</th>
+                    <th>TimeStamp</th>
+                </tr>
+
+                {% for event in all_events %}
+                    {% if event.session_id == session %}
+                        <tr>
+                            <td>{{ event.client }}</td>
+                            <td>{{ event.category }}</td>
+                            <td>{{ event.name }}</td>
+                            <td>
+                                <ul>
+                                {% for key, value in event.data.items %}
+                                    <li>{{ key }}:  {{ value }}</li>
+                                {% endfor %}
+                                </ul>
+                            </td>
+                            <td>{{ event.timestamp }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+          </div>
+        </section><!-- / .container -->
+
+{% endblock %}

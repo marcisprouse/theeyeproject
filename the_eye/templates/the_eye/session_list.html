@@ -1,0 +1,25 @@
+{% extends "base_nav.html" %}
+{% load static %}
+{% block title %}Session Listt{% endblock %}
+
+{% block content %}
+
+        <section class="container section">
+          <div class="row ws-m">
+
+            <header class="sec-heading">
+              <h2>Sessions</h2>
+            </header>
+            {% for session in object_list %}
+            <ul>
+                <li>
+                    <a href="{% url 'the_eye:session_details' session.id %}">{{ session }}</a>
+                </li>
+            </ul>
+            {% endfor %}
+
+
+      </div>
+</section><!-- / .container -->
+
+{% endblock %}
