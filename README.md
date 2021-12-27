@@ -59,8 +59,8 @@ Client as related models (foreign keys).  I ordered the Event model
 by the foreign key field's timestamp so that when it is accessed
 through the Session model, it will be ordered appropriately. Since
 events are associated to a session, it is necessary for the payload
-to come in with a session id.  **For the client app I created, I
-ensured a session was set, even for anonymous users.** I should have
+to come in with a session id.  For the client app I created, I
+ensured a session was set, even for anonymous users. I should have
 validated for that in my script in "The Eye." -- I may update that
 after this writing.  The Client model of "The Eye" is set up by the
 user of "The Eye" with token information from the client's app's api
@@ -88,13 +88,16 @@ avoid race conditions.
 
 ### Use Cases
 I implemented the use case of being able to query a specific session,
-a specific category, and a specific time range, but not through to
-its end.  I set it up to where GraphQL could query for this
+a specific category, and a specific time range, but not to its end.  
+I set it up to where GraphQL could query for this
 information. Also, I created a views.py with generic List and Detail
 views so that the Session, Category, and Time Ranges can be easily 
 retrieved.  In this way, the event data can be accessed through the 
 detail view for each of those models (since they are related fields 
-in the Event model).
+in the Event model). I created a template for Session List and Session
+Detail in the Live Demo Site as an example.  The events related to each
+session detail is easily retrieved using session.event_set.all in
+the template.
 
 For the use case of monitoring errors that happens in "The Eye,"
 I would create a model for Errors and would use the needed validation
@@ -133,9 +136,7 @@ so that templates can easily render tables of Session, Category, and
 Time information with related event information.  I did set up the
  Session Lookup templates - you can see it in action in the Live Demo.
  When you click on a session, a detail page with table of events is
- populated.  I used a custom context processor to make "all_events"
-a global variable. The events are listed in order of time that
-they occurred, most recent first.  
+ populated.    
   
 ## Notes to Reviewer
 * Please be sure to visit the live demo site! Credentials to login

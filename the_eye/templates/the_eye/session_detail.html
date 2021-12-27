@@ -12,8 +12,6 @@
               <h4 style="text-transform: lowercase;">{{ session }}</h4>
             </header>
 
-            <strong>{{ event_data }}</strong>
-
             <table class="table" style="margin-bottom:150px;">
                 <tr>
                     <th>Client App</th>
@@ -22,9 +20,9 @@
                     <th>Data</th>
                     <th>TimeStamp</th>
                 </tr>
-
-                {% for event in all_events %}
+                {% for event in session.event_set.all %}
                     {% if event.session_id == session %}
+
                         <tr>
                             <td>{{ event.client }}</td>
                             <td>{{ event.category }}</td>
