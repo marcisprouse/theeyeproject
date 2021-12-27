@@ -21,8 +21,6 @@
                     <th>TimeStamp</th>
                 </tr>
                 {% for event in session.event_set.all %}
-                    {% if event.session_id == session %}
-
                         <tr>
                             <td>{{ event.client }}</td>
                             <td>{{ event.category }}</td>
@@ -36,7 +34,6 @@
                             </td>
                             <td>{{ event.timestamp }}</td>
                         </tr>
-                    {% endif %}
                 {% endfor %}
             </table>
           </div>
