@@ -6,19 +6,19 @@ from .models import Session, Category, Time, Event
 class SessionType(DjangoObjectType):
     class Meta:
         model = Session
-        fields = ('session_id',)
+        fields = ('session_id', 'events_by_session')
 
 
 class CategoryType(DjangoObjectType):
     class Meta:
         model = Category
-        fields = ('name',)
+        fields = ('name', 'events_by_category')
 
 
 class TimeType(DjangoObjectType):
     class Meta:
         model = Time
-        fields = ('timestamp',)
+        fields = ('timestamp', 'events_by_time')
 
 
 class EventType(DjangoObjectType):
@@ -32,6 +32,7 @@ class Query(graphene.ObjectType):
     all_categories = graphene.List(CategoryType)
     all_times = graphene.List(TimeType)
     all_events = graphene.List(EventType)
+    session_by_session_id = graphene.Field(SessionType, session_id=graphene.String(required=True))
 
     def resolve_all_sessions(root, info):
         return Session.objects.all()
@@ -45,21 +46,12 @@ class Query(graphene.ObjectType):
     def resolve_all_events(root, info):
         return Event.objects.all()
 
-    session_id = graphene.Field(SessionType)
-    events_by_session = graphene.List(EventType,
-                                session_id=graphene.ID(),
-                                category=graphene.String(),
-                                name=graphene.String(),
-                                data=graphene.JSONString(),
-                                timestamp=graphene.DateTime()
-                            )
+    def resolve_session_by_session_id(root, info, session_id):
+        try:
+            return Session.objects.get(session_id=session_id)
+        except Session.DoesNotExist:
+            return None
 
-    def resolve_session_id(self, info, id):
-        return Session.objects.get(pk=id)
-
-    def resolve_events_by_session(self, info, session_id=None, category=None, name=None, data=None, timestamp=None, **kwargs):
-        if session_id:
-            return Event.objects.filter(session_id__id=session_id)
 
 schema = graphene.Schema(query=Query)
 

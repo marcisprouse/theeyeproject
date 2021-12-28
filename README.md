@@ -96,8 +96,8 @@ retrieved.  In this way, the event data can be accessed through the
 detail view for each of those models (since they are related fields 
 in the Event model). I created a template for Session List and Session
 Detail in the Live Demo Site as an example.  The events related to each
-session detail is easily retrieved using session.event_set.all in
-the template.
+session detail is easily retrieved using related name that was set in
+the models into the template.
 
 For the use case of monitoring errors that happens in "The Eye,"
 I would create a model for Errors and would use the needed validation

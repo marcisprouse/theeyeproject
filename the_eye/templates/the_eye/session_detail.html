@@ -20,7 +20,7 @@
                     <th>Data</th>
                     <th>TimeStamp</th>
                 </tr>
-                {% for event in session.event_set.all %}
+                {% for event in session.events_by_session.all %}
                         <tr>
                             <td>{{ event.client }}</td>
                             <td>{{ event.category }}</td>
