@@ -87,10 +87,20 @@ seed_event() script with select_for_update to the database calls to
 avoid race conditions.
 
 ### Use Cases
-I implemented the use case of being able to query a specific session,
-a specific category, and a specific time range, but not to its end.  
+I implemented the use case of being able to query a specific session.  
 I set it up to where GraphQL could query for this
-information. Also, I created a views.py with generic List and Detail
+information. 
+![Image: Example of Query Events by a certain Session](https://www.the-eye.app/static/the_eye/query_example.jpg)
+
+The same can be done for Category and Time.  Time will be more involved.
+I would likely create another model for time ranges that have a start
+time and end time where both fields relate to the Time model. Views
+can be made to create custom time ranges. Another idea is to use
+the model that exists and give options such as "All events in a week"
+and produce those events within a time period that is compared to 
+"now".
+
+Also, I created a views.py with generic List and Detail
 views so that the Session, Category, and Time Ranges can be easily 
 retrieved.  In this way, the event data can be accessed through the 
 detail view for each of those models (since they are related fields 
@@ -102,7 +112,8 @@ the models into the template.
 For the use case of monitoring errors that happens in "The Eye,"
 I would create a model for Errors and would use the needed validation
 on the other models. I would use django signals to populate the Error
-model.
+model. I could also use the errors that are produced in Django Q
+since errors are modeled there.
 
 
 ## Installation Requirements
