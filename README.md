@@ -60,9 +60,9 @@ by the foreign key field's timestamp so that when it is accessed
 through the Session model, it will be ordered appropriately. Since
 events are associated to a session, it is necessary for the payload
 to come in with a session id.  For the client app I created, I
-ensured a session was set, even for anonymous users. I should have
-validated for that in my script in "The Eye." -- I may update that
-after this writing.  The Client model of "The Eye" is set up by the
+ensured a session was set, even for anonymous users. I validated
+for the existence of session_id within "The Eye" model using clean() and
+save() overrides. The Client model of "The Eye" is set up by the
 user of "The Eye" with token information from the client's app's api
 and the endpoint url.  The script runs a for loop over the clients.
 

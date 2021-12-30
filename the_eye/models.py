@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 
 class Client(models.Model):
@@ -13,6 +15,20 @@ class Client(models.Model):
 
 class Session(models.Model):
     session_id = models.CharField(max_length=255, blank=True, null=True) # This field will be populated based on the data field information that comes in from the external api.
+
+    def clean(self, *args, **kwargs):
+        if self.session_id.exists():
+            super().clean(*args, **kwargs)
+        else:
+            raise ValidationError(
+                _("The data should contain a session id"),
+                code='invalid'
+            )
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.session_id
 
