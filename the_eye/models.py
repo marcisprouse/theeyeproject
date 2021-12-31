@@ -17,7 +17,7 @@ class Session(models.Model):
     session_id = models.CharField(max_length=255, blank=True, null=True) # This field will be populated based on the data field information that comes in from the external api.
 
     def clean(self, *args, **kwargs):
-        if self.session_id.exists():
+        if self.session_id:
             super().clean(*args, **kwargs)
         else:
             raise ValidationError(
