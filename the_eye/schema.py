@@ -1,6 +1,7 @@
 from graphene_django import DjangoObjectType
 import graphene
 from .models import Session, Category, Time, Event
+from django.utils import dateparse
 
 
 class SessionType(DjangoObjectType):
@@ -32,7 +33,13 @@ class Query(graphene.ObjectType):
     all_categories = graphene.List(CategoryType)
     all_times = graphene.List(TimeType)
     all_events = graphene.List(EventType)
-    session_by_session_id = graphene.Field(SessionType, session_id=graphene.String(required=True))
+    all_events_by_session_id = graphene.Field(SessionType, session_id=graphene.String(required=True))
+    all_events_from_date_to = graphene.List(
+        TimeType,
+        from_date=graphene.String(),
+        to_date=graphene.String(),
+    )
+    all_events_by_category=graphene.Field(CategoryType, name=graphene.String(required=True))
 
     def resolve_all_sessions(root, info):
         return Session.objects.all()
@@ -46,10 +53,22 @@ class Query(graphene.ObjectType):
     def resolve_all_events(root, info):
         return Event.objects.all()
 
-    def resolve_session_by_session_id(root, info, session_id):
+    def resolve_all_events_by_session_id(root, info, session_id):
         try:
             return Session.objects.get(session_id=session_id)
         except Session.DoesNotExist:
+            return None
+
+    def resolve_all_events_from_date_to(self, info, **kwargs):
+        return Time.objects.filter(
+            timestamp__gte=dateparse.parse_datetime(kwargs['from_date']),
+            timestamp__lte=dateparse.parse_datetime(kwargs['to_date']),
+        )
+
+    def resolve_all_events_by_category(root, info, name):
+        try:
+            return Category.objects.get(name=name)
+        except Category.DoesNotExist:
             return None
 
 

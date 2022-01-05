@@ -87,18 +87,79 @@ seed_event() script with select_for_update to the database calls to
 avoid race conditions.
 
 ### Use Cases
-I implemented the use case of being able to query a specific session.  
-I set it up to where GraphQL could query for this
-information. 
-![Image: Example of Query Events by a certain Session](https://www.the-eye.app/static/the_eye/query_example.jpg)
+I implemented the use case of being able to query events for a specific session, certain time ranges, and category.  
+I set it up to where GraphQL could query for this information (see examples below). 
 
-The same can be done for Category and Time.  Time will be more involved.
-I would likely create another model for time ranges that have a start
-time and end time where both fields relate to the Time model. Views
-can be made to create custom time ranges. Another idea is to use
-the model that exists and give options such as "All events in a week"
-and produce those events within a time period that is compared to 
-"now".
+**Query Images**
+
+Events by a certain session:
+![Image: Example of Query Events by a certain Session](https://www.the-eye.app/static/the_eye/events_by_session.jpg)
+
+Events by time range:
+![Image: Example of Query Events by a certain Session](https://www.the-eye.app/static/the_eye/events_by_time_range.jpg)
+
+Events by category:
+![Image: Example of Query Events by a certain Session](https://www.the-eye.app/static/the_eye/events_by_category.jpg)
+
+
+**This query renders all events for a specific session:**
+```json
+query {allEventsBySessionId(sessionId:"kfo70hfmvt3pfwmgc3tkt0xjbpja1rmu") {
+  sessionId
+  eventsBySession {
+    category {
+      name
+    }
+    name
+    data
+    timestamp {
+      timestamp
+    }
+  }
+}
+
+}
+```
+
+
+**This query renders all events for a certain time range:**
+```json
+query {allEventsFromDateTo(
+  fromDate:"2021-12-31 12:17:32.047892+00:00",
+  toDate:"2022-01-03 07:39:23.066994+00:00"
+) {
+  eventsByTime {
+    sessionId {
+      sessionId
+    }
+    category {
+      name
+    }
+    name
+    data
+  }
+}
+  
+}
+```
+
+
+**This query renders all events for a certain category:**
+```json
+query {allEventsByCategory(name:"page interaction") {
+  eventsByCategory {
+    category {
+      name
+    }
+    name
+    data
+    timestamp {
+      timestamp
+    }
+  }
+}
+}
+```
 
 Also, I created a views.py with generic List and Detail
 views so that the Session, Category, and Time Ranges can be easily 
