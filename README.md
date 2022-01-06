@@ -91,16 +91,16 @@ I implemented the use case of being able to query events for a specific session,
 I set it up to where GraphQL could query for this information (see examples below). 
 
 **Query Images**
-
+<!--START_SECTION:update_image-->
 Events by a certain session:
 ![Image: Example of Query Events by a certain Session](https://www.the-eye.app/static/the_eye/events_by_session.jpg)
 
 Events by time range:
-![Image: Example of Query Events by a certain Session](https://www.the-eye.app/static/the_eye/events_by_time_range.jpg)
+![Image: Example of Query Events by a certain Session](https://www.the-eye.app/static/the_eye/events_by_time_range_update.jpg)
 
 Events by category:
 ![Image: Example of Query Events by a certain Session](https://www.the-eye.app/static/the_eye/events_by_category.jpg)
-
+<!--END_SECTION:update_image-->
 
 **This query renders all events for a specific session:**
 ```json
