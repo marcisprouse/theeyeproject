@@ -124,22 +124,23 @@ query {allEventsBySessionId(sessionId:"kfo70hfmvt3pfwmgc3tkt0xjbpja1rmu") {
 
 **This query renders all events for a certain time range:**
 ```json
-query {allEventsFromDateTo(
-  fromDate:"2021-12-31 12:17:32.047892+00:00",
-  toDate:"2022-01-03 07:39:23.066994+00:00"
-) {
-  eventsByTime {
-    sessionId {
-      sessionId
-    }
-    category {
+query {
+  allEventsFromDateTo(fromDate: "2021-12-31 12:17:32.047892+00:00", 
+  toDate: "2022-01-03 07:39:23.066994+00:00") {
+    eventsByTime {
+      sessionId {
+        sessionId
+      }
+      category {
+        name
+      }
       name
+      data
+      timestamp {
+        timestamp
+      }
     }
-    name
-    data
   }
-}
-  
 }
 ```
 
