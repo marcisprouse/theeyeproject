@@ -95,7 +95,7 @@ for client in clients:
 
 
     class Command(BaseCommand):
-      def handle(self, *args, **options):
-        seed_event()
-        print("completed")
+        def handle(self, *args, **options):
+            seed_event()
+            print("completed")
 

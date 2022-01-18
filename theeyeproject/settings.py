@@ -94,6 +94,7 @@ Q_CLUSTER = {
     'workers': 3, #The number of workers to use in the cluster. Defaults to CPU count of the current host. My host has 3 workers.
     'queue_limit': 120, # how many tasks are kept in memory by a single cluster.
     'orm': 'default',
+    'catch_up': False,
 }
 
 
